@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 
 export function GET(request) {
     const users = [{
-        name: "krish P",
+        name: "krish Prasad",
         phone: "213123",
         email: "krish@gmail.com"
     },{
-        name: "Ashu Doshu",
+        name: "Ashu Prasad",
         phone: "213123",
         email: "ashu@gmail.com"
     },{
-        name: "Anshika Sharma",
+        name: "Anshika Prasad",
         phone: "213123",
         email: "anshu@gmail.com"
     }];

@@ -2,6 +2,6 @@ import { NextResponse } from "next/server";
 
 export function GET(request) {
     return NextResponse.json({
-        message: "SUCK MY PP",
+        message: "NEXT IS BETTER",
     })
 }
