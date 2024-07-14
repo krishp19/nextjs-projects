@@ -14,17 +14,17 @@ export const connectDb = async() => {
 
 
         //testing and creating new user
-        const work = new Work({
-            Title: "Develop API Endpoints",
-            Priority: "High",
-            Status: "In Progress",
-            Description: "Create and implement API endpoints for the new project",
-            StartDate: "2024-07-01",
-            EndDate: "2024-07-15"
-        });
-        console.log(work)
-        await work.save();
-        console.log("Work created...")
+        //const work = new Work({
+         //   Title: "Develop API Endpoints",
+        //    Priority: "High",
+         //   Status: "In Progress",
+         //   Description: "Create and implement API endpoints for the new project",
+        //    StartDate: "2024-07-01",
+        //    EndDate: "2024-07-15"
+        //});
+        //console.log(work)
+        //await work.save();
+        //console.log("Work created...")
 
         console.log("connected with host: ", connection.host);
     } catch (error) {
