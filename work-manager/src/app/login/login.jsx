@@ -1,13 +1,15 @@
 "use client"
 
+import UserContext from '@/context/userContext';
 import { login } from '@/services/userService';
 import { useRouter } from 'next/navigation';
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import { toast } from 'react-toastify';
 
 function Login() {
 
-    const router = useRouter()
+    const router = useRouter();
+    const context = useContext(UserContext);
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -38,9 +40,9 @@ function Login() {
             toast.success("Logged In",{
                 position:"top-center",
             });
-
+            context.setUser(result.user);
             //redirect
-            router.push('/profile/user')
+            router.refresh('/profile/user')
         } catch (error) {
 
             console.log(error)

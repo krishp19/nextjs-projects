@@ -1,6 +1,7 @@
 import { Work } from "@/models/work"
 import { User } from "@/models/user"
 import { NextResponse } from "next/server"
+import { connectDb } from "@/helper/db"
 
 
 export async function GET(request, {params}) {
@@ -16,6 +17,7 @@ export async function DELETE(request, {params}) {
     const { workId } = params;
     
     try {
+        await connectDb();
         await Work.deleteOne({
             _id: workId
         });
@@ -42,7 +44,7 @@ export async function PUT(request, {params}) {
             work.title = title
             work.description = description
             work.status = status
-
+        await connectDb();
         const updatedWork = await work.save()
         return NextResponse.json(updatedWork)
 

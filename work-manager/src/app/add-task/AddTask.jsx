@@ -101,8 +101,8 @@ export const AddTask = () => {
                     value={work.status}
                     >
                         <option value="none" disabled>--- Select Status ---</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Completed</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
                     </select>
                     
                 </div>

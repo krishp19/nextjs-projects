@@ -8,7 +8,7 @@ export async function middleware(request) {
 
     const authToken = request.cookies.get("authToken")?.value
     
-    if(request.nextUrl.pathname === '/api/login'){
+    if(request.nextUrl.pathname === '/api/login' || request.nextUrl.pathname === '/api/users'){
         return 
     }
 
@@ -19,11 +19,21 @@ export async function middleware(request) {
     if (loggedInUserNotAccessPaths) {
         //accessing not secured route
         if(authToken){
-            return NextResponse.redirect(new URL('/profile/user', request.url))
+            return NextResponse.redirect(new URL('/', request.url))
         }
     }else{
         //accessing secured route
         if(!authToken){
+
+            if(request.nextUrl.pathname.startsWith("/api")){
+                return NextResponse.json({
+                    message: "You are not authorized to access this route",
+                    success:false
+                },{
+                    status:401,
+                })
+            }
+
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }
@@ -39,5 +49,6 @@ export const config = {
     "/add-task",
     "/show-task",
     "/profile/:path*",
-    "/api/:path*"],
+    "/api/:path*"
+],
 }

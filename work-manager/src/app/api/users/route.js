@@ -3,12 +3,13 @@ import { User } from "@/models/user";
 import  bcrypt  from 'bcryptjs'
 import { NextResponse } from "next/server";
 
-connectDb();
+
 
 export async function GET(request) {
     let users = []
     
     try {
+        await connectDb();
         users = await User.find().select("-password");
     } catch (error) {
         console.log(error)
@@ -26,6 +27,7 @@ export async function POST(request) {
     const { name, email, password, about, profileURL } = await request.json();
 
     try {
+    
         // Check if the email already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -52,6 +54,7 @@ export async function POST(request) {
             parseInt(process.env.BCRYPT_SALT)
         );
         console.log(user)
+        await connectDb();
         const createdUser = await user.save();
         const response = NextResponse.json(createdUser, {
             status: 201,

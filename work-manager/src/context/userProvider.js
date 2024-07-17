@@ -20,7 +20,7 @@ const UserProvider = ({children}) => {
                 setUser({...tempUser});
             } catch (error) {
                 console.log(error)
-                toast.error("error in loading current user")
+                //toast.error("You need to login dumbass")
                 setUser(undefined)
             }
         }
