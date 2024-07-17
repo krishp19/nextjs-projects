@@ -1,5 +1,6 @@
 import { connectDb } from "@/helper/db";
 import { User } from "@/models/user";
+import  bcrypt  from 'bcryptjs'
 import { NextResponse } from "next/server";
 
 connectDb();
@@ -21,35 +22,62 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-    
-    //fetch user detail from request
-    const {name,email,password,about,profileURL} = await request.json();
-    
-    //create user object with user model
-    const user = new User({
-        name,
-        email,
-        password,
-        about,
-        profileURL
-    })
+    // Fetch user details from the request
+    const { name, email, password, about, profileURL } = await request.json();
 
     try {
-        //save the object to database
-        const createdUser = await user.save()
-        return NextResponse.json(user,{
+        // Check if the email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return NextResponse.json({
+                message: "Email already in use",
+                status: false,
+            }, {
+                status: 500,
+            });
+        }
+        
+        // Create user object with the user model
+        const user = new User({
+            name,
+            email,
+            password,
+            about,
+            profileURL
+        });
+
+        // Save the object to the database
+        user.password = bcrypt.hashSync(
+            user.password,
+            parseInt(process.env.BCRYPT_SALT)
+        );
+        console.log(user)
+        const createdUser = await user.save();
+        const response = NextResponse.json(createdUser, {
             status: 201,
         });
+        return response;
 
     } catch (error) {
         console.log(error);
+        // Handle duplicate key error
+        if (error.code === 11000) {
+            return NextResponse.json({
+                message: "Email already in use",
+                status: false,
+            }, {
+                status: 500,
+            });
+        }
+        // General error handling
         return NextResponse.json({
-            message:"failed to create user",
+            message: "User not created",
             status: false,
-        })
+        }, {
+            status: 500,
+        });
     }
 }
-
 export function DELETE(request){
     console.log("delete api called")
     return NextResponse.json({
